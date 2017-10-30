@@ -56,7 +56,7 @@ if ($action === "login" && isset($_POST['submit'])) {
     <meta name="description" content="Mintwind Clouflare Partner DNS Control Panel">
     <meta name="keywords" content="Chocoweb, Cloudflare, partner, console, control, panel">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Mintwind Ray - Clouflare Partner DNS Control Panel</title>
+    <title>Clouflare Ray Partner DNS Control Panel</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp" />
     <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -66,7 +66,7 @@ if ($action === "login" && isset($_POST['submit'])) {
 <body>
     <div class="am-container">
         <div class="am-margin-top-sm">
-            <div class="am-text-lg"><strong class="am-text-primary"><a href="<?php echo $root; ?>/">Mintwind Ray</a></strong> · Cloudflare Partner</div>
+            <div class="am-text-lg"><strong class="am-text-primary"><a href="<?php echo $root; ?>/">DNS Console</a></strong> · Cloudflare Partner</div>
         </div>
     </div>
     <hr>
@@ -222,7 +222,7 @@ if ($action === "login" && isset($_POST['submit'])) {
     </div>
     <hr>
     <div class="am-container">
-        <p>Originated by WeiUZ. Refined by <a href="https://www.mintwind.net/" target="_blank">Mintwind</a>.</p>
+        <p>Originated by WeiUZ. Refined by <a href="https://www.bohan.co/" target="_blank">Brent</a>.</p>
     </div>
 </body>
 
