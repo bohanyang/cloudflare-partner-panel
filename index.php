@@ -188,6 +188,8 @@ if ($action === "login" && isset($_POST['submit'])) {
             break;
         case "login":
             if (empty($msg)) {
+                $res['result'] = 'success';
+                $msg = "Please enter the login credential of your <strong><a href=\"https://www.cloudflare.com/\" target=\"_blank\" rel=\"nofollow\">Cloudflare</a> account</strong>. Nothing will be saved on our server, forever. The connection to this site is encrypted and authenticated using a security configuration which is <strong>rated A+ by <a href=\"https://myssl.com/ray.bohan.co\" target=\"_blank\" rel=\"nofollow\">MySSL</a> and <a href=\"https://www.ssllabs.com/ssltest/analyze.html?d=ray.bohan.co\" target=\"_blank\" rel=\"nofollow\">Qualys SSL Labs</a></strong> and <a href=\"https://www.htbridge.com/ssl/?id=E8Wl7nBR\" target=\"_blank\" rel=\"nofollow\"><strong>compliant with PCI DSS, HIPAA and NIST standards</strong></a>.";
         ?>
         <form method="POST" action="" class="am-form am-form-horizontal">
             <div class="am-form-group">
