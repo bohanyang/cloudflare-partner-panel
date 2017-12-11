@@ -137,15 +137,25 @@ if ($action === "login" && isset($_POST['submit'])) {
             foreach($res['response']['hosted_cnames'] as $key => $cnames) {
                 $key = $key != $zone_name ? substr($key, 0, strlen($key) - strlen($zone_name) - 1) : false;
                 if ($key != false) {
-                    $zoneAll .= $key . ':' . $cnames . ',';
+                    $zoneAll .= $key . ' ' . $cnames . "\n";
                 }
             }
             $zoneAll = substr($zoneAll, 0, -1);
             $root_res = $res['response']['hosted_cnames']["$zone_name"];
             if (isset($_POST['submit'])) {
-                $subdomains = $_POST['subdomains'];
+                $subdomains = explode("\n", $_POST['subdomains']);
+                $dataSet = [];
+                foreach ($subdomains as $subdomain) {
+                    if (!empty($subdomain)) {
+                        $data = explode(' ', $subdomain);
+                        if (!empty($data[0]) && !empty($data[1])) {
+                            $dataSet[] = trim($data[0]) . ':' . trim($data[1]);
+                        }
+                    }
+                }
+                $postRaw = implode(',', $dataSet);
                 $root_resolving = $_POST['root_resolving'];
-                $res = $cloudflare->zoneSet($zone_name, $root_resolving, $subdomains);
+                $res = $cloudflare->zoneSet($zone_name, $root_resolving, $postRaw);
                 if ($res['result'] == 'success') {
                     $msg = 'Updated successfully. Click <a href="' . $root . '/zones/' . $zone_name . '/"><strong>here</strong></a> to return to the record list.';
                 } else {
@@ -157,11 +167,11 @@ if ($action === "login" && isset($_POST['submit'])) {
             <fieldset>
                 <legend>DNS Records</legend>
                     <div class="am-form-group">
-                        <label for="doc-ipt-email-1">Please enter the origin for <?php echo $zone_name; ?></label>
+                        <label for="doc-ipt-email-1">Origin for <?php echo $zone_name; ?></label>
                         <input type="text" name="root_resolving" class="" value="<?php echo $root_res; ?>" required>
                     </div>
                     <div class="am-form-group">
-                        <label for="doc-ta-1">Format: "SUB-DOMAIN-1:ORIGIN-1,SUB-DOMAIN-2:ORIGIN-2..."</label>
+                        <label for="doc-ta-1">&lt;subdomain&gt; &lt;origin&gt;</label>
                         <textarea name="subdomains" class="" rows="5" id="doc-ta-1" required><?php echo $zoneAll; ?></textarea>
                     </div>
                     <p><button type="submit" name="submit" class="am-btn am-btn-primary am-round">Submit All</button></p>

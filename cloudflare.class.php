@@ -1,7 +1,4 @@
 <?php
-/**
-* cloudflare
-*/
 
 class CloudFlare
 {
@@ -11,7 +8,6 @@ class CloudFlare
 		$this->key = $key;
 	}
 
-	// POST DATA
 	public function postData($data) {
 		$data['host_key'] = $this->key;
 		$ch = curl_init();
@@ -26,11 +22,9 @@ class CloudFlare
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 		$res = curl_exec($ch);
 		curl_close($ch);
-		//var_dump($res);
 		return json_decode($res,true);
 	}
 
-	// 用户登录/注册
 	public function userCreate($cloudflare_email,$cloudflare_pass)
 	{
 		$data['act'] = 'user_create';
@@ -41,7 +35,6 @@ class CloudFlare
 		return $res;
 	}
 
-	// 域名列表
 	public function userLookup()
 	{
 		$data['act'] = 'user_lookup';
@@ -50,7 +43,6 @@ class CloudFlare
 		return $res;
 	}
 
-	// 记录列表
 	public function zoneLookup($zone_name)
 	{
 		$data['act'] = 'zone_lookup';
@@ -66,7 +58,6 @@ class CloudFlare
 		}
 	}
 
-	// 增加记录
 	public function zoneSet($zone_name,$resolve_to,$subdomains)
 	{
 		$data['act'] = 'zone_set';
@@ -78,7 +69,6 @@ class CloudFlare
 		return $res;
 	}
 	
-	// 删除域名
 	public function zoneDelete($zone_name)
 	{
 		$data['act'] = 'zone_delete';
