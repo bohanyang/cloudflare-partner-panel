@@ -49,11 +49,9 @@ class CloudFlare
 		$data['user_key'] = $_COOKIE['user_key'];
 		$data['zone_name'] = $zone_name;
 		$res = $this->postData($data);
-		if ( $res['response']['zone_exists'] == true )
-		{
+		if ( $res['response']['zone_exists'] == true ) {
 			return $res;
-		}else
-		{
+		} else {
 			die("Invalid Operation. Please double check the domain you have entered.");
 		}
 	}
