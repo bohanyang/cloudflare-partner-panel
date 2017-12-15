@@ -40,8 +40,8 @@ if ($action === "login" && isset($_POST['submit'])) {
     $cloudflare_pass = $_POST['cloudflare_pass'];
     $res = $cloudflare->userCreate($cloudflare_email, $cloudflare_pass);
     if ($res['result'] == 'success') {
-        setcookie('cloudflare_email', $res['response']['cloudflare_email'], time() + 900, $root . '/');
-        setcookie('user_key', $res['response']['user_key'], time() + 900, $root . '/');
+        setcookie('cloudflare_email', $res['response']['cloudflare_email'], time() + 900, $root . '/', "", $cookie_secure, true);
+        setcookie('user_key', $res['response']['user_key'], time() + 900, $root . '/', "", $cookie_secure, true);
         redir($root . '/', 303);
     } else {
         $msg = $res['msg'];
