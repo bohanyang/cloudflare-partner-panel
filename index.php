@@ -49,7 +49,7 @@ if ($action === "login" && isset($_POST['submit'])) {
 }
 ?>
 <!DOCTYPE HTML>
-<html class="no-js">
+<html>
 
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -58,7 +58,7 @@ if ($action === "login" && isset($_POST['submit'])) {
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/amazeui/2.7.2/css/amazeui.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/amazeui/2.7.2/css/amazeui.min.css" integrity="sha256-QKNFQcDYZ0j2Vh4QhAzg711B2Ps81YW5Lte6SDm8NYM=" crossorigin="anonymous">
 </head>
 
 <body>
