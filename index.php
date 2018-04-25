@@ -54,7 +54,7 @@ if ($action === "login" && isset($_POST['submit'])) {
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bohan × Cloudflare・DNS Console</title>
+    <title>Eloque × Cloudflare・DNS Console</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -64,7 +64,7 @@ if ($action === "login" && isset($_POST['submit'])) {
 <body>
     <div class="am-container">
         <div class="am-margin-top-sm">
-            <div class="am-text-lg"><strong class="am-text-primary"><a href="<?php echo $root; ?>/">Bohan × Cloudflare</a></strong>・DNS Console</div>
+            <div class="am-text-lg"><strong class="am-text-primary"><a href="<?php echo $root; ?>/">Eloque × Cloudflare</a></strong>・DNS Console</div>
         </div>
     </div>
     <hr>
@@ -188,8 +188,10 @@ if ($action === "login" && isset($_POST['submit'])) {
             <thead><tr><th>Domain</th><th>Manage</th><th>Delete</th></tr></thead>
             <tbody>
                 <?php
-                    foreach($res['response']['hosted_zones'] as $key => $value) {
-                        echo '<tr><td>' . $value . '</td><td><a class="am-btn am-btn-sm am-btn-primary am-round" href="' . $root . '/zones/' . $value . '/">Manage</a></td><td><form class="am-form" action="' . $root . '/del/" method="POST"><input type="hidden" name="domain" value="' . $value . '"><button class="am-btn am-btn-sm am-btn-danger am-round" type="submit">Delete</button></form></td></tr>';
+                    if (!empty($res['response']['hosted_zones'])) {
+                        foreach($res['response']['hosted_zones'] as $key => $value) {
+                            echo '<tr><td>' . $value . '</td><td><a class="am-btn am-btn-sm am-btn-primary am-round" href="' . $root . '/zones/' . $value . '/">Manage</a></td><td><form class="am-form" action="' . $root . '/del/" method="POST"><input type="hidden" name="domain" value="' . $value . '"><button class="am-btn am-btn-sm am-btn-danger am-round" type="submit">Delete</button></form></td></tr>';
+                        }
                     }
                 ?>
             </tbody>
@@ -232,7 +234,7 @@ if ($action === "login" && isset($_POST['submit'])) {
     </div>
     <hr>
     <div class="am-container">
-        <p>Originated by WeiUZ. Refined by <a href="https://www.bohan.co/" target="_blank">Bohan</a>.</p>
+        <p>Originated by WeiUZ. Refined by <a href="https://www.bohan.co/" target="_blank">Brent Yang</a>.</p>
     </div>
 </body>
 
