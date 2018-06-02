@@ -23,10 +23,12 @@ function redir ($loc, $code = 303)
     exit();
 }
 
-$nodes = isset($_SERVER['PATH_INFO']) ? parse_path_info($_SERVER['PATH_INFO']) : [];
+$raw_path_info = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : (isset($_SERVER['ORIG_PATH_INFO']) ? $_SERVER['ORIG_PATH_INFO'] : "");
+
+$nodes = parse_path_info($raw_path_info);
 $home = !isset($nodes[0]);
 if (!$home && !$nodes[1]) {
-    redir($root . $_SERVER['PATH_INFO'] . '/', 301);
+    redir($root . $raw_path_info . '/', 301);
 }
 $action = $home ? "" : $nodes[0][0];
 if (!isset($_COOKIE['user_key']) && ($action !== "login")) {
