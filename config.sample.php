@@ -1,8 +1,31 @@
 <?php
 
 $timezone = 'Asia/Shanghai';
-$root = "/index.php"; // <= PATH_INFO => $root = ""; (Pretty URL)
+
+// !!! README !!!
+// !!! This PHP script use (and only use) path_info to route
+// !!! Make sure you have correct $_SERVER['PATH_INFO'] or $_SERVER['ORIG_PATH_INFO'] been set
+// !!!
+// !!! (
+// !!!   If you use NGiNX web server, remember to use fastcgi_split_path_info and
+// !!!   set $fastcgi_path_info as fastcgi_param PATH_INFO
+// !!! )
+// !!!
+// !!! Search on the web what PATH_INFO means if you have no idea
+// !!! Sorry for my willfulness...
+
+// If you have done the rewrite from /some/path to index.php
+// You can set this var to empty string to enable Pretty URL (hide the /index.php)
+// If not, set it to /index.php
+$root = "/index.php";
+
 $key = "YOUR_API_KEY";
-$cookie_secure = true; // If you are using HTTP, then set this to false.
-// Login page message
-$defmsg = "Please enter the login credential of your <strong><a href=\"https://www.cloudflare.com/\" target=\"_blank\" rel=\"nofollow\">Cloudflare</a> account</strong>. Nothing will be saved on our server, forever. The connection to this site is encrypted and authenticated using a security configuration which is rated <strong><a href=\"https://www.ssllabs.com/ssltest/analyze.html?d=ray.bohan.co\" target=\"_blank\" rel=\"nofollow\">A+</a></strong> by SSL Labs.";
+
+// If you are using HTTP, then set this to false.
+$cookie_secure = true;
+
+// Provider Name
+$provider = "Yet Another..."
+
+// Login Page Message HTML
+$defmsg = "Just use it...";

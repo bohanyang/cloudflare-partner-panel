@@ -56,17 +56,17 @@ if ($action === "login" && isset($_POST['submit'])) {
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Eloque × Cloudflare・DNS Console</title>
+    <title><?php echo $provider; ?> × Cloudflare・DNS Console</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/amazeui/2.7.2/css/amazeui.min.css" integrity="sha256-QKNFQcDYZ0j2Vh4QhAzg711B2Ps81YW5Lte6SDm8NYM=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/amazeui/2.7.2/css/amazeui.min.css" integrity="sha256-QKNFQcDYZ0j2Vh4QhAzg711B2Ps81YW5Lte6SDm8NYM=" crossorigin="anonymous">
 </head>
 
 <body>
     <div class="am-container">
         <div class="am-margin-top-sm">
-            <div class="am-text-lg"><strong class="am-text-primary"><a href="<?php echo $root; ?>/">Eloque × Cloudflare</a></strong>・DNS Console</div>
+            <div class="am-text-lg"><strong class="am-text-primary"><a href="<?php echo $root; ?>/"><?php echo $provider; ?> × Cloudflare</a></strong>・DNS Console</div>
         </div>
     </div>
     <hr>
@@ -236,7 +236,7 @@ if ($action === "login" && isset($_POST['submit'])) {
     </div>
     <hr>
     <div class="am-container">
-        <p>Originated by WeiUZ. Refined by <a href="https://www.bohan.co/" target="_blank">Brent Yang</a>.</p>
+        <p>Originated by <a href="http://www.hostloc.com/thread-386441-1-1.html" target="_blank">WeiUZ</a>. Refined by <a href="https://github.com/bohanco/cloudflare-partner-panel" target="_blank">Bohan Yang</a>.</p>
     </div>
 </body>
 
