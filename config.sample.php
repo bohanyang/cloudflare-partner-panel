@@ -25,7 +25,7 @@ $key = "YOUR_API_KEY";
 $cookie_secure = true;
 
 // Provider Name
-$provider = "Yet Another..."
+$provider = "Yet Another...";
 
 // Login Page Message HTML
 $defmsg = "Just use it...";
