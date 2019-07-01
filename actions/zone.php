@@ -99,17 +99,17 @@ foreach ($dnsresult as $record) {
 	if ($record->name != '_tlo-wildcard.' . $zone_name) {
 		if ($record->proxiable) {
 			if ($record->proxied) {
-				$proxiable = '<a href="?action=zone&domain=' . $zone_name . '&disable=' . $record->id . '&page=' . $_GET['page'] . '&amp;zoneid=' . $zoneID . '"><img src="images/cloud_on.png" height="19"></a>';
+				$proxiable = '<a href="?action=zone&domain=' . $zone_name . '&disable=' . $record->id . '&page=' . $_GET['page'] . '&amp;zoneid=' . $zoneID . '"><img src="assets/cloud_on.png" height="19"></a>';
 			} else {
-				$proxiable = '<a href="?action=zone&domain=' . $zone_name . '&enable=' . $record->id . '&page=' . $_GET['page'] . '&amp;zoneid=' . $zoneID . '"><img src="images/cloud_off.png" height="30"></a>';
+				$proxiable = '<a href="?action=zone&domain=' . $zone_name . '&enable=' . $record->id . '&page=' . $_GET['page'] . '&amp;zoneid=' . $zoneID . '"><img src="assets/cloud_off.png" height="30"></a>';
 			}
 		} else {
-			$proxiable = '<img src="images/cloud_off.png" height="30">';
+			$proxiable = '<img src="assets/cloud_off.png" height="30">';
 		}
 		if (isset($_GET['enable']) && $record->id === $_GET['enable']) {
-			$proxiable = '<a href="?action=zone&domain=' . $zone_name . '&disable=' . $record->id . '&page=' . $_GET['page'] . '&amp;zoneid=' . $zoneID . '"><img src="images/cloud_on.png" height="19"></a>';
+			$proxiable = '<a href="?action=zone&domain=' . $zone_name . '&disable=' . $record->id . '&page=' . $_GET['page'] . '&amp;zoneid=' . $zoneID . '"><img src="assets/cloud_on.png" height="19"></a>';
 		} elseif (isset($_GET['disable']) && $record->id === $_GET['disable']) {
-			$proxiable = '<a href="?action=zone&domain=' . $zone_name . '&enable=' . $record->id . '&page=' . $_GET['page'] . '&amp;zoneid=' . $zoneID . '"><img src="images/cloud_off.png" height="30"></a>';
+			$proxiable = '<a href="?action=zone&domain=' . $zone_name . '&enable=' . $record->id . '&page=' . $_GET['page'] . '&amp;zoneid=' . $zoneID . '"><img src="assets/cloud_off.png" height="30"></a>';
 		}
 		if ($record->type == 'MX') {
 			$priority = '<code>' . $record->priority . '</code> ';

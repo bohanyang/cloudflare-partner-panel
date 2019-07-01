@@ -95,8 +95,8 @@ echo _('Cloudflare CNAME/IP Advanced Setup') . ' &#8211; ' . $page_title;
 	<meta name="renderer" content="webkit">
 	<meta http-equiv="Cache-Control" content="no-siteapp"/>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous">
-	<link rel="stylesheet" href="css/tlo-c061807.css">
-	<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+	<link rel="stylesheet" href="assets/tlo-c061807.css">
+	<link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 </head>
 <body class="bg-light">
 	<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
@@ -176,6 +176,6 @@ if ((isset($is_beta) && $is_beta) || (isset($is_debug) && $is_debug)) {
 
 	<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha256-E/V4cWE4qvAeO5MOhjtGtqDzPndRO1LBk8lJ/PR7CA4=" crossorigin="anonymous"></script>
-	<script src="js/main-ed98cf1.js"></script>
+	<script src="assets/main-ed98cf1.js"></script>
 </body>
 </html>
