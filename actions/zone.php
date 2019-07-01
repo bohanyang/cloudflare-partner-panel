@@ -14,7 +14,7 @@ $zones = new Cloudflare\API\Endpoints\Zones($adapter);
 $zoneID = $_GET['zoneid'];
 
 try {
-	$dnsresult_data = $dns->listRecords($zoneID, false, false, false, intval($_GET['page']));
+	$dnsresult_data = $dns->listRecords($zoneID, '', '', '', intval($_GET['page']));
 } catch (Exception $e) {
 	exit('<div class="alert alert-danger" role="alert">' . $e->getMessage() . '</div>');
 }
