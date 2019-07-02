@@ -1,19 +1,15 @@
 <?php
 
-if (@file_exists("../config.php")) {
-	require_once "../config.php";
-} else {
-	require_once "config.php";
-}
+require __DIR__ . '/config.php';
 
-if (!defined('HOST_KEY') || !defined('HOST_MAIL')) {
+if (!defined('HOST_KEY')) {
 	exit(_('No HOST_KEY or HOST_MAIL defined in config.php .'));
-} elseif (HOST_KEY === 'e9e4498f0584b7098692512db0c62b48' || HOST_MAIL === 'ze3kr@example.com') {
+} elseif (HOST_KEY === 'e9e4498f0584b7098692512db0c62b48') {
 	exit(_('Please set up your own HOST_KEY and HOST_MAIL in config.php .'));
 }
 
 if (!isset($page_title)) {
-	$page_title = "TlOxygen";
+	$page_title = 'Cloudflare';
 }
 
 /*
@@ -44,17 +40,19 @@ if (isset($language_supported[$short_lan])) {
 	$iso_language = 'en';
 }
 putenv('LANG=' . $locale);
-setlocale(LC_MESSAGES, $locale);
+if (defined('LC_MESSAGES')) {
+	setlocale(LC_MESSAGES, $locale);	
+}
 bindtextdomain($domain, $dir);
 bind_textdomain_codeset($domain, "UTF-8");
 textdomain($domain);
-require_once 'languages/translates.php';
+require __DIR__ . '/languages/translates.php';
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Content-Type: text/html; charset=UTF-8");
 
-if ($is_debug) {
+if (isset($is_debug) && $is_debug) {
 	ini_set('display_errors', 1);
 	ini_set('display_startup_errors', 1);
 	error_reporting(E_ALL);
 }
-require_once dirname(__FILE__) . '/vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';

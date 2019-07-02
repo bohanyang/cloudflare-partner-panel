@@ -15,7 +15,7 @@ if (isset($_POST['submit'])) {
 			exit('<div class="alert alert-danger" role="alert">' . $e->getMessage() . '</div>');
 		}
 		if ($res['result'] == 'success') {
-			$msg = _('Success') . ', <a target="_blank" href="https://www.cloudflare.com/a/overview/' . $zone_name . '">' . _('Go to console') . '</a>. ';
+			$msg = _('Success') . ', <a target="_blank" href="https://dash.cloudflare.com/">' . _('Go to console') . '</a>. ';
 			exit('<div class="alert alert-success" role="alert">' . $msg . '</div>');
 		} elseif (isset($res['msg'])) {
 			$msg = $res['msg'];
@@ -23,9 +23,7 @@ if (isset($_POST['submit'])) {
 			print_r($res);
 		}
 	}
-	/*
-		 * We need `_tlo-wildcard` subdomain to support anycast IP information.
-	*/
+
 	$zones = new \Cloudflare\API\Endpoints\Zones($adapter);
 	try {
 		$zoneID = $zones->getZoneID($zone_name);
@@ -37,7 +35,7 @@ if (isset($_POST['submit'])) {
 
 	if (isset($add_domain) && $add_domain) {
 		try {
-			$res = $cloudflare->zoneSet($zone_name, 'example.com', '_tlo-wildcard');
+			$res = $cloudflare->zoneSet($zone_name, 'example.com', 'www');
 		} catch (Exception $e) {
 			exit('<div class="alert alert-danger" role="alert">' . $e->getMessage() . '</div>');
 		}
@@ -49,23 +47,6 @@ if (isset($_POST['submit'])) {
 		$zones = new \Cloudflare\API\Endpoints\Zones($adapter);
 		try {
 			$zoneID = $zones->getZoneID($zone_name);
-		} catch (Exception $e) {
-			exit('<div class="alert alert-danger" role="alert">' . $e->getMessage() . '</div>');
-		}
-
-		try {
-			$dns = new \Cloudflare\API\Endpoints\DNS($adapter);
-			$dnsresult = $dns->listRecords($zoneID)->result;
-			/*
-				 * Delete @ and `www` record to make this zone fresh.
-			*/
-			foreach ($dnsresult as $record) {
-				if ($record->name == $zone_name) {
-					$dns->deleteRecord($zoneID, $record->id);
-				} elseif ($record->name == 'www.' . $zone_name) {
-					$dns->deleteRecord($zoneID, $record->id);
-				}
-			}
 		} catch (Exception $e) {
 			exit('<div class="alert alert-danger" role="alert">' . $e->getMessage() . '</div>');
 		}

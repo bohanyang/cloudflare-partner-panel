@@ -24,7 +24,7 @@ if (!isset($_GET['page'])) {
 	<?php
 $zones = new \Cloudflare\API\Endpoints\Zones($adapter);
 try {
-	$zones_data = $zones->listZones(false, false, intval($_GET['page']));
+	$zones_data = $zones->listZones('', '', intval($_GET['page']));
 } catch (Exception $e) {
 	exit('<div class="alert alert-danger" role="alert">' . $e->getMessage() . '</div>');
 }

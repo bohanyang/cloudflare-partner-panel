@@ -29,20 +29,6 @@ foreach ($dnsresult as $record) {
 	$dnsname[$record->id] = $record->name;
 	$dnscheck[$record->name] = true;
 }
-
-/*
- * We need `_tlo-wildcard` subdomain to support anycast IP information.
- */
-if (!isset($dnscheck['_tlo-wildcard.' . $zone_name]) && $_GET['page'] == 1) {
-	try {
-		$dns->addRecord($zoneID, 'CNAME', '_tlo-wildcard', 'cloudflare.tlo.xyz');
-	} catch (Exception $e) {
-		if (isset($is_debug) && $is_debug) {
-			echo '<div class="alert alert-danger" role="alert">' . $e->getMessage() . '</div>';
-		}
-	}
-}
-
 ?>
 <strong><?php echo '<h1 class="h5"><a href="?action=zone&amp;domain=' . $zone_name . '&amp;zoneid=' . $zoneID . '">' . strtoupper($zone_name) . '</a></h1>'; ?></strong>
 <hr><?php
@@ -95,61 +81,73 @@ if (isset($_GET['enable']) && !$dnsproxyied[$_GET['enable']]) {
 	<tbody>
 		<?php
 $no_record_yet = true;
+$resolver = new Net_DNS2_Resolver(['nameservers' => ['162.159.0.33', '162.159.7.226']]);
+try {
+	$resp = $resolver->query($zone_name, 'NS');
+} catch (Net_DNS2_Exception $e) {
+	// echo $e->getMessage();
+}
 foreach ($dnsresult as $record) {
-	if ($record->name != '_tlo-wildcard.' . $zone_name) {
-		if ($record->proxiable) {
-			if ($record->proxied) {
-				$proxiable = '<a href="?action=zone&domain=' . $zone_name . '&disable=' . $record->id . '&page=' . $_GET['page'] . '&amp;zoneid=' . $zoneID . '"><img src="assets/cloud_on.png" height="19"></a>';
-			} else {
-				$proxiable = '<a href="?action=zone&domain=' . $zone_name . '&enable=' . $record->id . '&page=' . $_GET['page'] . '&amp;zoneid=' . $zoneID . '"><img src="assets/cloud_off.png" height="30"></a>';
+	if ($record->proxiable) {
+		if ($record->proxied) {
+			$proxiable = '<a href="?action=zone&domain=' . $zone_name . '&disable=' . $record->id . '&page=' . $_GET['page'] . '&amp;zoneid=' . $zoneID . '"><img src="assets/cloud_on.png" height="19"></a>';
+			if (!isset($resp_a) && !isset($resp_aaaa)) {
+				try {
+					$resp_a = $resolver->query("$record->name.cdn.cloudflare.net", 'A');
+					$resp_aaaa = $resolver->query("$record->name.cdn.cloudflare.net", 'AAAA');
+				} catch (Net_DNS2_Exception $e) {
+					// echo $e->getMessage();
+				}
 			}
 		} else {
-			$proxiable = '<img src="assets/cloud_off.png" height="30">';
-		}
-		if (isset($_GET['enable']) && $record->id === $_GET['enable']) {
-			$proxiable = '<a href="?action=zone&domain=' . $zone_name . '&disable=' . $record->id . '&page=' . $_GET['page'] . '&amp;zoneid=' . $zoneID . '"><img src="assets/cloud_on.png" height="19"></a>';
-		} elseif (isset($_GET['disable']) && $record->id === $_GET['disable']) {
 			$proxiable = '<a href="?action=zone&domain=' . $zone_name . '&enable=' . $record->id . '&page=' . $_GET['page'] . '&amp;zoneid=' . $zoneID . '"><img src="assets/cloud_off.png" height="30"></a>';
 		}
-		if ($record->type == 'MX') {
-			$priority = '<code>' . $record->priority . '</code> ';
-		} else {
-			$priority = '';
-		}
-		if (isset($ttl_translate[$record->ttl])) {
-			$ttl = $ttl_translate[$record->ttl];
-		} else {
-			$ttl = $record->ttl . ' s';
-		}
-		$no_record_yet = false;
-		echo '<tr>
-			<td class="d-none d-md-table-cell"><code>' . $record->type . '</code></td>
-			<td scope="col">
-				<div class="d-block d-md-none float-right">' . $proxiable . '</div>
-				<div class="d-block d-md-none">' . $record->type . ' ' . _('record') . '</div>
-				<code>' . htmlspecialchars($record->name) . '</code>
-				<div class="d-block d-md-none">' . _('points to') . ' ' . '<code>' . htmlspecialchars($record->content) . '</code></div>
-				<div class="btn-group dropleft float-right d-block d-md-none" style="margin-top:-1em;">
-					<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					' . _('Manage') . '
-					</button>
-					<div class="dropdown-menu">
-						<a class="dropdown-item" href="?action=edit_record&domain=' . $zone_name . '&recordid=' . $record->id . '&zoneid=' . $zoneID . '">' . _('Edit') . '</a>
-						<a class="dropdown-item" href="?action=delete_record&domain=' . $zone_name . '&delete=' . $record->id . '&zoneid=' . $zoneID . '" onclick="return confirm(\'' . _('Are you sure to delete') . ' ' . htmlspecialchars($record->name) . '?\')">' . _('Delete') . '</a>
-					</div>
-				</div>
-				<div class="d-block d-md-none">' . _('TTL') . ' ' . $ttl . '</div>
-			</td>
-			<td class="d-none d-md-table-cell">' . $priority . '<code>' . htmlspecialchars($record->content) . '</code></td>
-			<td class="d-none d-md-table-cell">' . $ttl . '</td>
-			<td class="d-none d-md-table-cell" style="width: 200px;">' . $proxiable . ' |
-				<div class="btn-group" role="group">
-					<a class="btn btn-dark btn-sm" href="?action=edit_record&domain=' . $zone_name . '&recordid=' . $record->id . '&zoneid=' . $zoneID . '">' . _('Edit') . '</a>
-					<a class="btn btn-danger btn-sm" href="?action=delete_record&domain=' . $zone_name . '&delete=' . $record->id . '&zoneid=' . $zoneID . '" onclick="return confirm(\'' . _('Are you sure to delete') . ' ' . htmlspecialchars($record->name) . '?\')">' . _('Delete') . '</a>
-				</div>
-			</td>
-		</tr>';
+	} else {
+		$proxiable = '<img src="assets/cloud_off.png" height="30">';
 	}
+	if (isset($_GET['enable']) && $record->id === $_GET['enable']) {
+		$proxiable = '<a href="?action=zone&domain=' . $zone_name . '&disable=' . $record->id . '&page=' . $_GET['page'] . '&amp;zoneid=' . $zoneID . '"><img src="assets/cloud_on.png" height="19"></a>';
+	} elseif (isset($_GET['disable']) && $record->id === $_GET['disable']) {
+		$proxiable = '<a href="?action=zone&domain=' . $zone_name . '&enable=' . $record->id . '&page=' . $_GET['page'] . '&amp;zoneid=' . $zoneID . '"><img src="assets/cloud_off.png" height="30"></a>';
+	}
+	if ($record->type == 'MX') {
+		$priority = '<code>' . $record->priority . '</code> ';
+	} else {
+		$priority = '';
+	}
+	if (isset($ttl_translate[$record->ttl])) {
+		$ttl = $ttl_translate[$record->ttl];
+	} else {
+		$ttl = $record->ttl . ' s';
+	}
+	$no_record_yet = false;
+	echo '<tr>
+		<td class="d-none d-md-table-cell"><code>' . $record->type . '</code></td>
+		<td scope="col">
+			<div class="d-block d-md-none float-right">' . $proxiable . '</div>
+			<div class="d-block d-md-none">' . $record->type . ' ' . _('record') . '</div>
+			<code>' . htmlspecialchars($record->name) . '</code>
+			<div class="d-block d-md-none">' . _('points to') . ' ' . '<code>' . htmlspecialchars($record->content) . '</code></div>
+			<div class="btn-group dropleft float-right d-block d-md-none" style="margin-top:-1em;">
+				<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				' . _('Manage') . '
+				</button>
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="?action=edit_record&domain=' . $zone_name . '&recordid=' . $record->id . '&zoneid=' . $zoneID . '">' . _('Edit') . '</a>
+					<a class="dropdown-item" href="?action=delete_record&domain=' . $zone_name . '&delete=' . $record->id . '&zoneid=' . $zoneID . '" onclick="return confirm(\'' . _('Are you sure to delete') . ' ' . htmlspecialchars($record->name) . '?\')">' . _('Delete') . '</a>
+				</div>
+			</div>
+			<div class="d-block d-md-none">' . _('TTL') . ' ' . $ttl . '</div>
+		</td>
+		<td class="d-none d-md-table-cell">' . $priority . '<code>' . htmlspecialchars($record->content) . '</code></td>
+		<td class="d-none d-md-table-cell">' . $ttl . '</td>
+		<td class="d-none d-md-table-cell" style="width: 200px;">' . $proxiable . ' |
+			<div class="btn-group" role="group">
+				<a class="btn btn-dark btn-sm" href="?action=edit_record&domain=' . $zone_name . '&recordid=' . $record->id . '&zoneid=' . $zoneID . '">' . _('Edit') . '</a>
+				<a class="btn btn-danger btn-sm" href="?action=delete_record&domain=' . $zone_name . '&delete=' . $record->id . '&zoneid=' . $zoneID . '" onclick="return confirm(\'' . _('Are you sure to delete') . ' ' . htmlspecialchars($record->name) . '?\')">' . _('Delete') . '</a>
+			</div>
+		</td>
+	</tr>';
 }
 ?>
 	</tbody>
@@ -185,10 +183,9 @@ if (isset($dnsresult_data->result_info->total_pages)) {
 	</thead>
 	<tbody>
 		<?php
-$resolver = new Net_DNS2_Resolver(array('nameservers' => array('162.159.2.9', '162.159.9.55')));
 $avoid_cname_duplicated = [];
 foreach ($dnsresult as $record) {
-	if ($record->name != '_tlo-wildcard.' . $zone_name && !isset($avoid_cname_duplicated[$record->name])) {
+	if (!isset($avoid_cname_duplicated[$record->name])) {
 		echo '<tr>
 				<td scope="col"><code>' . $record->name . '</code>
 					<div class="d-block d-md-none">' . _('points to') . ' <code>' . $record->name . '.cdn.cloudflare.net</code></div>
@@ -219,13 +216,7 @@ if (isset($dnsresult_data->result_info->total_pages)) {
 	}
 	echo '<p>' . $previous_page . _('Page') . ' ' . $dnsresult_data->result_info->page . '/' . $dnsresult_data->result_info->total_pages . $next_page . '</p>';
 }
-try {
-	$resp_a = $resolver->query('_tlo-wildcard.' . $zone_name, 'A');
-	$resp_aaaa = $resolver->query('_tlo-wildcard.' . $zone_name, 'AAAA');
-	$resp = $resolver->query($zone_name, 'NS');
-} catch (Net_DNS2_Exception $e) {
-	// echo $e->getMessage();
-}
+
 if ((isset($resp_a->answer[0]->address) && isset($resp_a->answer[1]->address)) ||
 	(isset($resp_aaaa->answer[0]->address) && isset($resp_aaaa->answer[1]->address))) {
 	?>
@@ -270,7 +261,3 @@ if ((isset($resp_a->answer[0]->address) && isset($resp_a->answer[1]->address)) |
 	</tbody>
 </table>
 <?php }?>
-
-<hr>
-<h3 class="mt-5 mb-3"><a href="https://dash.cloudflare.com/" target="_blank"><?php echo _('More Settings'); ?></a></h3>
-<p><?php echo _('This site only provides configurations that the official does not have. For more settings, such as Page Rules, Crypto, Firewall, Cache, etc., please use the same account to login Cloudflare.com to setup. '); ?><a href="https://dash.cloudflare.com/" target="_blank"><?php echo _('More Settings'); ?></a></p>

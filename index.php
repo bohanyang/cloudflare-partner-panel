@@ -9,11 +9,11 @@
  */
 
 $starttime = microtime(true);
-$page_title = '';
+$page_title = null;
 $version = '1.2.3';
 
-require_once 'settings.php';
-require_once 'cloudflare.class.php';
+require __DIR__ . '/settings.php';
+require __DIR__ . '/cloudflare.class.php';
 
 if (!isset($_COOKIE['user_key']) || !isset($_COOKIE['cloudflare_email']) || !isset($_COOKIE['user_api_key'])) {
 	$_GET['action'] = 'login';
@@ -47,17 +47,15 @@ if (!isset($_COOKIE['user_key']) || !isset($_COOKIE['cloudflare_email']) || !iss
 	$adapter = new Cloudflare\API\Adapter\Guzzle($key);
 }
 if (!isset($_COOKIE['tlo_cached_main'])) {
-	h2push('css/bootstrap.min.css', 'style');
-	h2push('css/tlo.css?ver=' . urlencode($version), 'style');
-	h2push('js/jquery-3.3.1.slim.min.js', 'script');
-	h2push('js/bootstrap.bundle.min.js', 'script');
-	h2push('js/main.js?ver=' . urlencode($version), 'script');
+	h2push('assets/tlo-c061807.css', 'style');
+	h2push('assets/main-ed98cf1.js', 'script');
+	h2push('assets/favicon.ico', 'image');
 	setcookie('tlo_cached_main', 1);
 }
 
 if (isset($_GET['action']) && $_GET['action'] == 'zone' && !isset($_COOKIE['tlo_cached_cloud'])) {
-	h2push('images/cloud_on.png', 'script');
-	h2push('images/cloud_off.png', 'script');
+	h2push('assets/cloud_on.png', 'image');
+	h2push('assets/cloud_off.png', 'image');
 	setcookie('tlo_cached_cloud', 1);
 }
 ?><!DOCTYPE html>
@@ -90,7 +88,7 @@ if (isset($_GET['action'])) {
 	echo _('Console') . ' | ';
 }
 
-echo _('Cloudflare CNAME/IP Advanced Setup') . ' &#8211; ' . $page_title;
+echo _('Cloudflare CNAME/IP Advanced Setup') . ' - ' . $page_title;
 ?></title>
 	<meta name="renderer" content="webkit">
 	<meta http-equiv="Cache-Control" content="no-siteapp"/>
@@ -129,51 +127,47 @@ if (isset($_GET['action'])) {
 
 switch ($action) {
 case 'logout':
-	require_once 'actions/logout.php';
+	require __DIR__ . '/actions/logout.php';
 	break;
 case 'dnssec':
-	require_once 'actions/dnssec.php';
+	require __DIR__ . '/actions/dnssec.php';
 	break;
 case 'add_record':
-	require_once 'actions/add_record.php';
+	require __DIR__ . '/actions/add_record.php';
 	break;
 case 'edit_record':
-	require_once 'actions/edit_record.php';
+	require __DIR__ . '/actions/edit_record.php';
 	break;
 case 'delete_record':
-	require_once 'actions/delete_record.php';
+	require __DIR__ . '/actions/delete_record.php';
 	break;
 case 'analytics':
-	require_once 'actions/analytics.php';
+	require __DIR__ . '/actions/analytics.php';
 	break;
 case 'add':
-	require_once 'actions/add.php';
+	require __DIR__ . '/actions/add.php';
 	break;
 case 'zone':
-	require_once 'actions/zone.php';
+	require __DIR__ . '/actions/zone.php';
 	break;
 case 'security':
-	require_once 'actions/security.php';
+	require __DIR__ . '/actions/security.php';
 	break;
 case 'login':
-	require_once 'actions/login.php';
+	require __DIR__ . '/actions/login.php';
 	break;
 default:
-	require_once 'actions/list_zones.php';
+	require __DIR__ . '/actions/list_zones.php';
 	break;
 }
 ?>
 	</main>
-	<footer class="footer">
-			<p><a href="https://support.cloudflare.com/hc" target="_blank"><?php echo _('Cloudflare Support'); ?></a></p>
-			<p><a href="https://github.com/ZE3kr/Cloudflare-CNAME-Setup" target="_blank"><?php echo _('View on GitHub'); ?></a></p><?php
-if ((isset($is_beta) && $is_beta) || (isset($is_debug) && $is_debug)) {
+<?php
+if (isset($is_debug) && $is_debug) {
 	$time = round(microtime(true) - $starttime, 3);
-	echo '<small><p>Beta Version / Load time: ' . $time . 's </p>';
+	echo '<footer class="footer"><small><p>Load time: ' . $time . 's </p></footer>';
 }
 ?>
-	</footer>
-
 	<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha256-E/V4cWE4qvAeO5MOhjtGtqDzPndRO1LBk8lJ/PR7CA4=" crossorigin="anonymous"></script>
 	<script src="assets/main-ed98cf1.js"></script>
