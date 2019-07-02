@@ -1,12 +1,17 @@
 <?php
 class CloudFlare {
+	private $host_key;
+	public function __construct($host_key)
+	{
+		$this->host_key = $host_key;
+	}
 	/**
 	 * Sent a post to Cloudflare Partner API
 	 * @param $data
 	 * @return mixed
 	 */
 	public function postData(array $data) {
-		$data['host_key'] = HOST_KEY;
+		$data['host_key'] = $this->host_key;
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, 'https://api.cloudflare.com/host-gw.html');
 		curl_setopt($ch, CURLOPT_VERBOSE, 1);

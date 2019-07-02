@@ -20,7 +20,7 @@ if (!isset($_COOKIE['user_key']) || !isset($_COOKIE['cloudflare_email']) || !iss
 	if (isset($_POST['cloudflare_email']) && isset($_POST['cloudflare_pass'])) {
 		$cloudflare_email = $_POST['cloudflare_email'];
 		$cloudflare_pass = $_POST['cloudflare_pass'];
-		$cloudflare = new CloudFlare;
+		$cloudflare = new CloudFlare($host_key);
 		$res = $cloudflare->userCreate($cloudflare_email, $cloudflare_pass);
 		$times = apcu_fetch('login_' . date("Y-m-d H") . $cloudflare_email);
 		if ($times > 5) {
@@ -35,7 +35,7 @@ if (!isset($_COOKIE['user_key']) || !isset($_COOKIE['cloudflare_email']) || !iss
 			setcookie('user_key', $res['response']['user_key'], $cookie_time);
 			setcookie('user_api_key', $res['response']['user_api_key'], $cookie_time);
 
-			header('location: ./');
+			header('Location: ./');
 		} else {
 			$times = $times + 1;
 			apcu_store('login_' . date("Y-m-d H") . $cloudflare_email, $times, 7200);
@@ -118,7 +118,7 @@ echo _('Cloudflare CNAME/IP Advanced Setup') . ' - ' . $page_title;
 	</nav>
 	<main class="bg-white">
 <?php
-$cloudflare = new CloudFlare;
+$cloudflare = new CloudFlare($host_key);
 if (isset($_GET['action'])) {
 	$action = $_GET['action'];
 } else {

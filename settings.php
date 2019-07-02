@@ -2,10 +2,8 @@
 
 require __DIR__ . '/config.php';
 
-if (!defined('HOST_KEY')) {
+if (!isset($host_key)) {
 	exit(_('No HOST_KEY or HOST_MAIL defined in config.php .'));
-} elseif (HOST_KEY === 'e9e4498f0584b7098692512db0c62b48') {
-	exit(_('Please set up your own HOST_KEY and HOST_MAIL in config.php .'));
 }
 
 if (!isset($page_title)) {
