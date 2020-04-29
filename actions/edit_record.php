@@ -28,12 +28,22 @@ if (isset($_POST['submit'])) {
 
 	include "record_data.php";
 
+	$options = [
+	    'type' => $dns_details->type,
+        'name' => $_POST['name'],
+        'content' => $_POST['content'],
+        'ttl' => intval($_POST['ttl']),
+        'priority' => $_POST['priority'],
+        'proxied' => $_POST['proxied']
+    ];
+
+	if ($dns_data !== []) $options['data'] = $dns_data;
+
 	try {
-		if ($dns->updateRecordDetails($_GET['zoneid'], $_GET['recordid'], ['type' => $dns_details->type, 'name' => $_POST['name'], 'content' => $_POST['content'], 'ttl' => intval($_POST['ttl']), 'priority' => $_POST['priority'], 'proxied' => $_POST['proxied'], 'data' => $dns_data])) {
+		if ($dns->updateRecordDetails($_GET['zoneid'], $_GET['recordid'], $options)) {
 			exit('<p class="alert alert-success" role="alert">' . _('Success') . '</p>');
-		} else {
-			echo '<p class="alert alert-danger" role="alert">' . _('Failed') . '</p>';
 		}
+		echo '<p class="alert alert-danger" role="alert">' . _('Failed') . '</p>';
 	} catch (Exception $e) {
 		echo '<p class="alert alert-danger" role="alert">' . _('Failed') . '</p>';
 		echo '<div class="alert alert-warning" role="alert">' . $e->getMessage() . '</div>';

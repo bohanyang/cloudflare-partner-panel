@@ -1,2 +1,5 @@
-vendor
-composer.lock
+/vendor/
+/.idea/
+/composer.lock
+/Caddyfile
+/.caddy.*

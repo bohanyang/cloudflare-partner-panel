@@ -23,20 +23,19 @@ if (isset($_POST['submit'])) {
 		'content' => $_POST['content'],
 		'proxied' => $_POST['proxied'],
 		'ttl' => intval($_POST['ttl']),
-		'data' => $dns_data,
 	];
 
-	if ($_POST['type'] == 'MX') {
-		$options['priority'] = intval($_POST['priority']);
-	}
+	if ($dns_data !== []) $options['data'] = $dns_data;
+
+	if ($_POST['type'] == 'MX') $options['priority'] = intval($_POST['priority']);
+
 	try {
 		$dns = $adapter->post('zones/' . $_GET['zoneid'] . '/dns_records', $options);
 		$dns = json_decode($dns->getBody());
 		if (isset($dns->result->id)) {
 			exit('<p class="alert alert-success" role="alert">' . _('Success') . ', <a href="?action=add_record&amp;zoneid=' . $_GET['zoneid'] . '&domain=' . $_GET['domain'] . '">' . _('Add New Record') . '</a>, ' . _('Or') . '<a href="?action=zone&amp;domain=' . $_GET['domain'] . '&amp;zoneid=' . $_GET['zoneid'] . '">' . _('Go to console') . '</a></p>');
-		} else {
-			exit('<p class="alert alert-danger" role="alert">' . _('Failed') . ', <a href="?action=add_record&amp;zoneid=' . $_GET['zoneid'] . '&domain=' . $_GET['domain'] . '">' . _('Add New Record') . '</a>, ' . _('Or') . '<a href="?action=zone&amp;domain=' . $_GET['domain'] . '&amp;zoneid=' . $_GET['zoneid'] . '">' . _('Go to console') . '</a></p>');
 		}
+		exit('<p class="alert alert-danger" role="alert">' . _('Failed') . ', <a href="?action=add_record&amp;zoneid=' . $_GET['zoneid'] . '&domain=' . $_GET['domain'] . '">' . _('Add New Record') . '</a>, ' . _('Or') . '<a href="?action=zone&amp;domain=' . $_GET['domain'] . '&amp;zoneid=' . $_GET['zoneid'] . '">' . _('Go to console') . '</a></p>');
 	} catch (Exception $e) {
 		echo '<p class="alert alert-danger" role="alert">' . _('Failed') . '</p>';
 		echo '<div class="alert alert-warning" role="alert">' . $e->getMessage() . '</div>';

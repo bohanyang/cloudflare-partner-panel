@@ -2,13 +2,9 @@
 
 require __DIR__ . '/config.php';
 
-if (!isset($host_key)) {
-	exit(_('No HOST_KEY or HOST_MAIL defined in config.php .'));
-}
+if (!isset($host_key) || $host_key === false) exit(_('No HOST_KEY or HOST_MAIL defined in config.php .'));
 
-if (!isset($page_title)) {
-	$page_title = 'Cloudflare';
-}
+$page_title = (isset($page_title) && $page_title !== false) ? $page_title : 'Cloudflare';
 
 /*
  * A quick fix for the server that does not support APCu Cache.

@@ -1,4 +1,5 @@
 <?php
+
 $dns_data = [];
 
 if ($_POST['type'] == 'CAA') {
@@ -20,4 +21,3 @@ if ($_POST['type'] == 'SRV') {
 		'weight' => intval($_POST['srv_weight']),
 	];
 }
-
