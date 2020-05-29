@@ -31,7 +31,6 @@ try {
 
 foreach ($zones_data->result as $zone) {
 	echo '<tr>';
-	$_translate_analytics = _('Advanced Analytics');
 	$_translate_manage = _('Manage');
 	$_translate_manage_dns = _('Manage DNS');
 	$_translate_security = _('Security');
@@ -44,7 +43,6 @@ foreach ($zones_data->result as $zone) {
 				</button>
 				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 					<a class="dropdown-item" href="https://dash.cloudflare.com/" target="_blank">{$_translate_manage_dns}</a>
-					<a class="dropdown-item" href="?action=analytics&amp;domain={$zone->name}&amp;zoneid={$zone->id}">{$_translate_analytics}</a>
 				</div>
 			</div>
 			{$zone->name}
@@ -60,7 +58,6 @@ HTML;
 				</button>
 				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 					<a class="dropdown-item" href="?action=zone&amp;domain={$zone->name}&amp;zoneid={$zone->id}">{$_translate_manage_dns}</a>
-					<a class="dropdown-item" href="?action=analytics&amp;domain={$zone->name}&amp;zoneid={$zone->id}">{$_translate_analytics}</a>
 					<a class="dropdown-item" href="?action=security&amp;domain={$zone->name}&amp;zoneid={$zone->id}">{$_translate_security}</a>
 				</div>
 			</div>
@@ -78,18 +75,12 @@ HTML;
 HTML;
 	if (property_exists($zone, 'name_servers')) {
 		echo '<a href="https://dash.cloudflare.com/" target="_blank" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="' . _('This domain only supports NS setup. And you should manage DNS records on Cloudflare.com.') . '">' . _('Manage DNS') . '</a>';
-		echo <<<HTML
-<a href="?action=analytics&amp;domain={$zone->name}&amp;zoneid={$zone->id}" class="btn btn-dark btn-sm">{$_translate_analytics}</a>
-HTML;
 	} else {
 		echo <<<HTML
 <a href="?action=zone&amp;domain={$zone->name}&amp;zoneid={$zone->id}" class="btn btn-secondary btn-sm">{$_translate_manage_dns}</a>
 HTML;
 		echo <<<HTML
-<a href="?action=analytics&amp;domain={$zone->name}&amp;zoneid={$zone->id}" class="btn btn-dark btn-sm">{$_translate_analytics}</a>
-HTML;
-		echo <<<HTML
-<a href="?action=security&amp;domain={$zone->name}&amp;zoneid={$zone->id}" class="btn btn-secondary btn-sm">{$_translate_security}</a>
+<a href="?action=security&amp;domain={$zone->name}&amp;zoneid={$zone->id}" class="btn btn-dark btn-sm">{$_translate_security}</a>
 HTML;
 
 	}

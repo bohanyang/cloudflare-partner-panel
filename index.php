@@ -141,9 +141,6 @@ case 'edit_record':
 case 'delete_record':
 	require __DIR__ . '/actions/delete_record.php';
 	break;
-case 'analytics':
-	require __DIR__ . '/actions/analytics.php';
-	break;
 case 'add':
 	require __DIR__ . '/actions/add.php';
 	break;
