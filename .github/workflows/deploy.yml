@@ -1,0 +1,20 @@
+name: Deploy CI
+
+on: push
+
+env:
+  _azure_resource_group: app
+  _kudu_app: cf-partner
+  _kudu_login: ${{ secrets.KUDU_LOGIN }}
+  _config_php: ${{ secrets.CONFIG_PHP }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: azure/login@v1.1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - uses: actions/checkout@v1
+      - name: Deploy
+        run: ./deploy.sh

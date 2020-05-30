@@ -26,7 +26,6 @@ $action_name = [
 	'add_record' => _('Add Record'),
 	'edit_record' => _('Edit Record'),
 	'delete_record' => _('Delete Record'),
-	'analytics' => _('Analytics'),
 	'add' => _('Add Domain'),
 	'zone' => _('Manage Zone'),
 	'dnssec' => _('DNSSEC'),
