@@ -39,7 +39,7 @@ _Clean() {
 _BuildCloudflarePartnerPanel() {
     mkdir -p "$1"
     _RecursivePull "$2" "$1" actions assets languages cloudflare.class.php config.php index.php settings.php composer.json composer.lock
-    composer install -d "$1" --no-dev --optimize-autoloader
+    php7.4 "$(command -v composer)" install -d "$1" --no-dev --optimize-autoloader
     _Clean "$1" composer.json composer.lock
 }
 

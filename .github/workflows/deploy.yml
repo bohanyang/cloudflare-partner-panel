@@ -3,7 +3,7 @@ name: Deploy CI
 on: push
 
 env:
-  _azure_resource_group: app
+  _azure_resource_group: project
   _kudu_app: cf-partner
   _kudu_login: ${{ secrets.KUDU_LOGIN }}
   _config_php: ${{ secrets.CONFIG_PHP }}
