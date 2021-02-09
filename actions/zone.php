@@ -224,14 +224,14 @@ if (isset($resp_a->answer[0]->address) || isset($resp_aaaa->answer[0]->address))
 <?php if (isset($resp_a->answer[0]->address)): ?>
 <h4>Anycast IPv4</h4>
 <ul>
-	<?php foreach ($resp_a as $answer): ?>
+	<?php foreach ($resp_a->answer as $answer): ?>
 	<li><code><?php echo $answer->address; ?></code></li>
 	<?php endforeach; ?>
 </ul>
 <?php endif; if (isset($resp_aaaa->answer[0]->address)): ?>
 <h4>Anycast IPv6</h4>
 <ul>
-	<?php foreach ($resp_aaaa as $answer): ?>
+	<?php foreach ($resp_aaaa->answer as $answer): ?>
 	<li><code><?php echo $answer->address; ?></code></li>
 	<?php endforeach; ?>
 </ul>
