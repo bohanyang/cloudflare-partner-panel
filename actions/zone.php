@@ -217,24 +217,25 @@ if (isset($dnsresult_data->result_info->total_pages)) {
 	echo '<p>' . $previous_page . _('Page') . ' ' . $dnsresult_data->result_info->page . '/' . $dnsresult_data->result_info->total_pages . $next_page . '</p>';
 }
 
-if ((isset($resp_a->answer[0]->address) && isset($resp_a->answer[1]->address)) ||
-	(isset($resp_aaaa->answer[0]->address) && isset($resp_aaaa->answer[1]->address))) {
+if (isset($resp_a->answer[0]->address) || isset($resp_aaaa->answer[0]->address)):
 	?>
 
 <h3 class="mt-5 mb-3" id="ip"><?php echo _('IP Setup'); ?></h3>
-<?php if (isset($resp_a->answer[0]->address) && isset($resp_a->answer[1]->address)) {?>
+<?php if (isset($resp_a->answer[0]->address)): ?>
 <h4>Anycast IPv4</h4>
 <ul>
-	<li><code><?php echo $resp_a->answer[0]->address; ?></code></li>
-	<li><code><?php echo $resp_a->answer[1]->address; ?></code></li>
+	<?php foreach ($resp_a as $answer): ?>
+	<li><code><?php echo $answer->address; ?></code></li>
+	<?php endforeach; ?>
 </ul>
-<?php }if (isset($resp_aaaa->answer[0]->address) && isset($resp_aaaa->answer[1]->address)) {?>
+<?php endif; if (isset($resp_aaaa->answer[0]->address)): ?>
 <h4>Anycast IPv6</h4>
 <ul>
-	<li><code><?php echo $resp_aaaa->answer[0]->address; ?></code></li>
-	<li><code><?php echo $resp_aaaa->answer[1]->address; ?></code></li>
+	<?php foreach ($resp_aaaa as $answer): ?>
+	<li><code><?php echo $answer->address; ?></code></li>
+	<?php endforeach; ?>
 </ul>
-<?php }}?>
+<?php endif; endif; ?>
 
 <?php if (isset($resp->answer[0]->nsdname) && isset($resp->answer[1]->nsdname)) {?>
 <h3 class="mt-5 mb-3" id="ns"><?php echo _('NS Setup'); ?></h3>
