@@ -13,7 +13,7 @@
         }
     ],
     "require": {
-        "php": "^7.4",
+        "php": "^7.4 || ^8.0",
         "cloudflare/sdk": "^1.1",
         "ext-curl": "*",
         "ext-gettext": "*",
