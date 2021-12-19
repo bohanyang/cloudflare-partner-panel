@@ -83,5 +83,11 @@ COPY --chown=www-data:www-data . /var/www/html
 RUN set -eux; \
     composer install -d  /var/www/html -o --no-dev
 
+ENTRYPOINT ["/var/www/html/docker-entrypoint.sh"]
+CMD ["apache2-foreground"]
+
 ENV CFP_HOST_KEY=""
-ENV CFP_TITLE="Cloudflare"
+ENV CFP_TITLE=Cloudflare
+ENV PORT=80
+
+EXPOSE $PORT
