@@ -2,7 +2,7 @@
 
 set -eu
 
-sed -Ei "s,^Listen 80,Listen $PORT," /etc/apache2/ports.conf
-sed -Ei "s,^<VirtualHost \*:80>,<VirtualHost *:$PORT>," /etc/apache2/sites-available/000-default.conf
+sed -Ei "s,^Listen [0-9]+,Listen $PORT," /etc/apache2/ports.conf
+sed -Ei "s,^<VirtualHost \*:[0-9]+>,<VirtualHost *:$PORT>," /etc/apache2/sites-available/000-default.conf
 
 exec docker-php-entrypoint "$@"
