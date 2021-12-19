@@ -1,4 +1,4 @@
-FROM php:7.4-apache-bullseye
+FROM php:8.1-apache-bullseye
 
 RUN set -eux; \
     \
@@ -18,7 +18,10 @@ RUN set -eux; \
     make -C "su-exec-$SU_EXEC_VERSION"; \
     mv "su-exec-$SU_EXEC_VERSION/su-exec" /usr/local/bin; \
     rm -r "su-exec-$SU_EXEC_VERSION"; \
-    echo 'zh_CN.UTF-8 UTF-8' | tee -a /etc/locale.gen; \
+    { \
+      echo 'en_US.UTF-8 UTF-8'; \
+      echo 'zh_CN.UTF-8 UTF-8'; \
+    } | tee -a /etc/locale.gen; \
     dpkg-reconfigure --frontend noninteractive locales
 
 RUN set -ex; \
