@@ -13,17 +13,23 @@
         }
     ],
     "require": {
-        "php": "^7.4 || ^8.0",
-        "cloudflare/sdk": "^1.1",
+        "php": ">=7.2",
         "ext-curl": "*",
         "ext-gettext": "*",
-        "ext-json": "*",
         "ext-intl": "*",
+        "ext-json": "*",
+        "cloudflare/sdk": "^1.1",
         "pear/net_dns2": "^1.4"
     },
     "replace": {
-        "symfony/polyfill-php72": "*",
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-intl-grapheme": "*",
+        "symfony/polyfill-intl-icu": "*",
+        "symfony/polyfill-intl-idn": "*",
+        "symfony/polyfill-intl-messageformatter": "*",
         "symfony/polyfill-intl-normalizer": "*",
-        "symfony/polyfill-intl-idn": "*"
+        "symfony/polyfill-mbstring": "*",
+        "symfony/polyfill-php72": "*"
     }
 }

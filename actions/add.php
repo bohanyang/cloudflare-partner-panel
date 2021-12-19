@@ -35,7 +35,7 @@ if (isset($_POST['submit'])) {
 
 	if (isset($add_domain) && $add_domain) {
 		try {
-			$res = $cloudflare->zoneSet($zone_name, 'example.com', 'www');
+			$res = $cloudflare->zoneSet_full($zone_name, 'example.com', 'www');
 		} catch (Exception $e) {
 			exit('<div class="alert alert-danger" role="alert">' . $e->getMessage() . '</div>');
 		}
