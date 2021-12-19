@@ -8,6 +8,8 @@
  *
  */
 
+error_reporting(E_ALL ^ E_DEPRECATED);
+
 $starttime = microtime(true);
 $page_title = null;
 $version = '1.2.3';
