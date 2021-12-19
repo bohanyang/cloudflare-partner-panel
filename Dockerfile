@@ -84,10 +84,7 @@ RUN set -eux; \
 COPY --chown=www-data:www-data . /var/www/html
 
 RUN set -eux; \
-    composer install -d  /var/www/html -o --no-dev; \
-    a2dismod mpm_prefork || true; \
-    a2dismod mpm_worker || true; \
-    a2enmod mpm_event || true
+    composer install -d  /var/www/html -o --no-dev
 
 
 ENTRYPOINT ["/var/www/html/docker-entrypoint.sh"]
