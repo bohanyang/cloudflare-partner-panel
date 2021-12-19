@@ -16,7 +16,9 @@ RUN set -eux; \
     \
     make -C "su-exec-$SU_EXEC_VERSION"; \
     mv "su-exec-$SU_EXEC_VERSION/su-exec" /usr/local/bin; \
-    rm -r "su-exec-$SU_EXEC_VERSION"
+    rm -r "su-exec-$SU_EXEC_VERSION"; \
+    echo 'zh_CN.UTF-8 UTF-8' | tee -a /etc/locale.gen; \
+    dpkg-reconfigure --frontend noninteractive locales
 
 RUN set -ex; \
     \
@@ -30,6 +32,7 @@ RUN set -ex; \
     ; \
     docker-php-ext-install -j "$(nproc)" \
         bcmath \
+        gettext \
         intl \
         opcache \
         pcntl \
