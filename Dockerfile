@@ -26,6 +26,7 @@ RUN set -ex; \
     apt-get install -y --no-install-recommends \
         libzip-dev \
         libgmp-dev \
+        libicu-dev \
     ; \
     docker-php-ext-install -j "$(nproc)" \
         bcmath \
