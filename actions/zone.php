@@ -83,8 +83,7 @@ if (isset($_GET['enable']) && !$dnsproxyied[$_GET['enable']]) {
 		<?php
 $no_record_yet = true;
 $dnsClient = new \Spatie\Dns\Dns();
-// ['162.159.0.33', '162.159.7.226']
-$dnsClient->useNameserver('162.159.0.33');
+$dnsClient->useNameserver('ns1.cloudflare.com');
 /** @var \Spatie\Dns\Records\Record[] $resp */
 $resp = $dnsClient->getRecords($zone_name, 'NS');
 foreach ($dnsresult as $record) {
