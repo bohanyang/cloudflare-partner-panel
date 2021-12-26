@@ -47,8 +47,8 @@ if (!isset($_COOKIE['user_key']) || !isset($_COOKIE['cloudflare_email']) || !iss
 	$adapter = new Cloudflare\API\Adapter\Guzzle($key);
 }
 if (!isset($_COOKIE['tlo_cached_main'])) {
-	h2push('assets/tlo-c061807.css', 'style');
-	h2push('assets/main-2005290.js', 'script');
+	h2push('assets/style.css', 'style');
+	h2push('assets/app.js', 'script');
 	h2push('assets/favicon.ico', 'image');
 	setcookie('tlo_cached_main', 1);
 }

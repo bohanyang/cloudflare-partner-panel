@@ -214,7 +214,7 @@ if (isset($dnsresult_data->result_info->total_pages)) {
 	echo '<p>' . $previous_page . trans('Page') . ' ' . $dnsresult_data->result_info->page . '/' . $dnsresult_data->result_info->total_pages . $next_page . '</p>';
 }
 
-if (isset($resp_a->answer[0]->address) || isset($resp_aaaa->answer[0]->address)):
+if (!empty($resp_a) || !empty($resp_aaaa)):
 	?>
 
 <h3 class="mt-5 mb-3" id="ip"><?php echo trans('IP Setup'); ?></h3>

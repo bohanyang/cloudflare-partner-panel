@@ -22,7 +22,7 @@ class CloudFlare {
         $res = $this->client->sendRequest(new Request(
             'POST',
             'https://api.cloudflare.com/host-gw.html',
-            ['Content-Type' => 'multipart/form-data'],
+            ['Content-Type' => 'application/x-www-form-urlencoded'],
             http_build_query($data)
         ));
 		return json_decode($res->getBody(), true);
