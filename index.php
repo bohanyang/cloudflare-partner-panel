@@ -24,7 +24,7 @@ if (!isset($_COOKIE['user_key']) || !isset($_COOKIE['cloudflare_email']) || !iss
 		$res = $cloudflare->userCreate($cloudflare_email, $cloudflare_pass);
 		$times = apcu_fetch('login_' . date("Y-m-d H") . $cloudflare_email);
 		if ($times > 5) {
-			$msg = '<p>' . _('You have been blocked since you have too many fail logins. You can try it in next hour.') . '</p>';
+			$msg = '<p>' . trans('You have been blocked since you have too many fail logins. You can try it in next hour.') . '</p>';
 		} elseif ($res['result'] == 'success') {
 			if (isset($_POST['remember'])) {
 				$cookie_time = time() + 31536000; // Expired in 365 days.
@@ -77,15 +77,13 @@ if (isset($_GET['action'])) {
 		echo $action_name[$_GET['action']] . ' | ';
 	}
 } else {
-	echo _('Console') . ' | ';
+	echo trans('Console') . ' | ';
 }
 
-echo _('Cloudflare CNAME/IP Advanced Setup') . ' - ' . $page_title;
+echo trans('Cloudflare CNAME/IP Advanced Setup') . ' - ' . $page_title;
 ?></title>
-	<meta name="renderer" content="webkit">
-	<meta http-equiv="Cache-Control" content="no-siteapp"/>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" integrity="sha256-aAr2Zpq8MZ+YA/D6JtRD3xtrwpEz2IqOS+pWD/7XKIw=" crossorigin="anonymous">
-	<link rel="stylesheet" href="assets/tlo-c061807.css">
+	<link rel="stylesheet" href="assets/style.css">
 	<link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 </head>
 <body class="bg-light">
@@ -98,11 +96,11 @@ echo _('Cloudflare CNAME/IP Advanced Setup') . ' - ' . $page_title;
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item active nav-link">
-					<?php if (isset($_GET['action']) && isset($action_name[$_GET['action']])) {echo $action_name[$_GET['action']];} else {echo _('Console');}?> <span class="sr-only">(current)</span>
+					<?php if (isset($_GET['action']) && isset($action_name[$_GET['action']])) {echo $action_name[$_GET['action']];} else {echo trans('Console');}?> <span class="sr-only">(current)</span>
 				</li>
 				<?php if (!isset($_GET['action']) || $_GET['action'] != 'login' && $_GET['action'] != 'logout') {?>
 				<li class="nav-item">
-					<a class="nav-link" href="?action=logout"><?php echo _('Logout'); ?></a>
+					<a class="nav-link" href="?action=logout"><?php echo trans('Logout'); ?></a>
 				</li>
 				<?php }?>
 			</ul>
@@ -159,6 +157,6 @@ if (isset($is_debug) && $is_debug) {
 ?>
 	<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js" integrity="sha256-Xt8pc4G0CdcRvI0nZ2lRpZ4VHng0EoUDMlGcBSQ9HiQ=" crossorigin="anonymous"></script>
-	<script src="assets/main-2005290.js"></script>
+	<script src="assets/app.js"></script>
 </body>
 </html>

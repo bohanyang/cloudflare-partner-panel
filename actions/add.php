@@ -15,7 +15,7 @@ if (isset($_POST['submit'])) {
 			exit('<div class="alert alert-danger" role="alert">' . $e->getMessage() . '</div>');
 		}
 		if ($res['result'] == 'success') {
-			$msg = _('Success') . ', <a target="_blank" href="https://dash.cloudflare.com/">' . _('Go to console') . '</a>. ';
+			$msg = trans('Success') . ', <a target="_blank" href="https://dash.cloudflare.com/">' . trans('Go to console') . '</a>. ';
 			exit('<div class="alert alert-success" role="alert">' . $msg . '</div>');
 		} elseif (isset($res['msg'])) {
 			$msg = $res['msg'];
@@ -40,7 +40,7 @@ if (isset($_POST['submit'])) {
 			exit('<div class="alert alert-danger" role="alert">' . $e->getMessage() . '</div>');
 		}
 	} else {
-		exit('<div class="alert alert-danger" role="alert">' . _('Cannot add a existing domain.') . '</div>');
+		exit('<div class="alert alert-danger" role="alert">' . trans('Cannot add a existing domain.') . '</div>');
 	}
 
 	if ($res['result'] == 'success') {
@@ -51,7 +51,7 @@ if (isset($_POST['submit'])) {
 			exit('<div class="alert alert-danger" role="alert">' . $e->getMessage() . '</div>');
 		}
 
-		$msg = _('Success') . ', <a href="?action=zone&amp;domain=' . $zone_name . '&amp;zoneid=' . $zoneID . '">' . _('Go to console') . '</a>. ';
+		$msg = trans('Success') . ', <a href="?action=zone&amp;domain=' . $zone_name . '&amp;zoneid=' . $zoneID . '">' . trans('Go to console') . '</a>. ';
 		exit('<div class="alert alert-success" role="alert">' . $msg . '</div>');
 	} elseif (isset($res['msg'])) {
 		$msg = $res['msg'];
@@ -66,7 +66,7 @@ if (isset($msg) && $msg != '') {
 
 ?>
 <form method="POST" action="" class="add-domain-form">
-	<label for="domain" class="sr-only"><?php echo _('Domain'); ?></label>
-	<input type="text" id="domain" class="form-control" name="domain" placeholder="<?php echo _('Please enter your domain'); ?>">
-	<button type="submit" name="submit" class="btn btn-primary mt-3"><?php echo _('Submit'); ?></button>
+	<label for="domain" class="sr-only"><?php echo trans('Domain'); ?></label>
+	<input type="text" id="domain" class="form-control" name="domain" placeholder="<?php echo trans('Please enter your domain'); ?>">
+	<button type="submit" name="submit" class="btn btn-primary mt-3"><?php echo trans('Submit'); ?></button>
 </form>

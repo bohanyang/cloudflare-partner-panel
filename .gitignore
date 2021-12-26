@@ -2,3 +2,4 @@
 /.idea/
 /Caddyfile
 /.caddy.*
+/composer.lock

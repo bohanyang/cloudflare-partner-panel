@@ -9,15 +9,15 @@ if (!isset($_GET['page'])) {
 	$_GET['page'] = 1;
 }
 ?>
-<a href="?action=add" class="btn btn-primary float-sm-right mb-3 d-block"><?php echo _('Add Domain'); ?></a>
-<h3 class="d-none d-sm-block"><?php echo _('Home'); ?></h3>
+<a href="?action=add" class="btn btn-primary float-sm-right mb-3 d-block"><?php echo trans('Add Domain'); ?></a>
+<h3 class="d-none d-sm-block"><?php echo trans('Home'); ?></h3>
 
 <table class="table table-striped">
 	<thead>
 	<tr>
-		<th scope="col"><?php echo _('Domain'); ?></th>
-		<th scope="col" class="d-none d-sm-table-cell"><?php echo _('Status'); ?></th>
-		<th scope="col" class="d-none d-sm-table-cell"><?php echo _('Operation'); ?></th>
+		<th scope="col"><?php echo trans('Domain'); ?></th>
+		<th scope="col" class="d-none d-sm-table-cell"><?php echo trans('Status'); ?></th>
+		<th scope="col" class="d-none d-sm-table-cell"><?php echo trans('Operation'); ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -31,9 +31,9 @@ try {
 
 foreach ($zones_data->result as $zone) {
 	echo '<tr>';
-	$_translate_manage = _('Manage');
-	$_translate_manage_dns = _('Manage DNS');
-	$_translate_security = _('Security');
+	$_translate_manage = trans('Manage');
+	$_translate_manage_dns = trans('Manage DNS');
+	$_translate_security = trans('Security');
 	if (property_exists($zone, 'name_servers')) {
 		echo <<<HTML
 		<td scope="col">
@@ -73,17 +73,12 @@ HTML;
 		<td class="d-none d-sm-table-cell">{$status_translate[$zone->status]}</td>
 		<td class="d-none d-sm-table-cell btn-group" role="group">
 HTML;
-	if (property_exists($zone, 'name_servers')) {
-		echo '<a href="https://dash.cloudflare.com/" target="_blank" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="' . _('This domain only supports NS setup. And you should manage DNS records on Cloudflare.com.') . '">' . _('Manage DNS') . '</a>';
-	} else {
-		echo <<<HTML
+	echo <<<HTML
 <a href="?action=zone&amp;domain={$zone->name}&amp;zoneid={$zone->id}" class="btn btn-secondary btn-sm">{$_translate_manage_dns}</a>
 HTML;
-		echo <<<HTML
+    echo <<<HTML
 <a href="?action=security&amp;domain={$zone->name}&amp;zoneid={$zone->id}" class="btn btn-dark btn-sm">{$_translate_security}</a>
 HTML;
-
-	}
 	echo '</td>';
 }
 ?>
@@ -94,11 +89,11 @@ if (isset($zones_data->result_info->total_pages)) {
 	$next_page = '';
 	if ($zones_data->result_info->page < $zones_data->result_info->total_pages) {
 		$page_link = $zones_data->result_info->page + 1;
-		$next_page = ' | <a href="?page=' . $page_link . '">' . _('Next') . '</a>';
+		$next_page = ' | <a href="?page=' . $page_link . '">' . trans('Next') . '</a>';
 	}
 	if ($zones_data->result_info->page > 1) {
 		$page_link = $zones_data->result_info->page - 1;
-		$previous_page = '<a href="?page=' . $page_link . '">' . _('Previous') . '</a> | ';
+		$previous_page = '<a href="?page=' . $page_link . '">' . trans('Previous') . '</a> | ';
 	}
-	echo '<p>' . $previous_page . _('Page') . ' ' . $zones_data->result_info->page . '/' . $zones_data->result_info->total_pages . $next_page . '</p>';
+	echo '<p>' . $previous_page . trans('Page') . ' ' . $zones_data->result_info->page . '/' . $zones_data->result_info->total_pages . $next_page . '</p>';
 }

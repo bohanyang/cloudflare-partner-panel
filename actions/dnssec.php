@@ -13,8 +13,8 @@ try {
 }
 
 if ($dnssec->success) {
-	$msg = '<p class="alert alert-success" role="alert">' . _('Success') . ', <a href="?action=security&domain=' . $_GET['domain'] . '&amp;zoneid=' . $_GET['zoneid'] . '">' . _('Go to console') . '</a></p>';
+	$msg = '<p class="alert alert-success" role="alert">' . trans('Success') . ', <a href="?action=security&domain=' . $_GET['domain'] . '&amp;zoneid=' . $_GET['zoneid'] . '">' . trans('Go to console') . '</a></p>';
 } else {
-	$msg = '<p class="alert alert-danger" role="alert">' . _('Failed') . ', <a href="?action=security&domain=' . $_GET['domain'] . '&amp;zoneid=' . $_GET['zoneid'] . '">' . _('Go to console') . '</a></p>';
+	$msg = '<p class="alert alert-danger" role="alert">' . trans('Failed') . ', <a href="?action=security&domain=' . $_GET['domain'] . '&amp;zoneid=' . $_GET['zoneid'] . '">' . trans('Go to console') . '</a></p>';
 }
 echo $msg;

@@ -1,10 +1,17 @@
 <?php
+
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request;
+
 class CloudFlare {
 	private $host_key;
-	public function __construct($host_key)
+    private $client;
+
+    public function __construct($host_key)
 	{
 		$this->host_key = $host_key;
-	}
+        $this->client = new Client(['timeout' => 10]);
+    }
 	/**
 	 * Sent a post to Cloudflare Partner API
 	 * @param $data
@@ -12,18 +19,13 @@ class CloudFlare {
 	 */
 	public function postData(array $data) {
 		$data['host_key'] = $this->host_key;
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, 'https://api.cloudflare.com/host-gw.html');
-		curl_setopt($ch, CURLOPT_VERBOSE, 1);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 20);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-		curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
-		$res = curl_exec($ch);
-		curl_close($ch);
-		return json_decode($res, true);
+        $res = $this->client->sendRequest(new Request(
+            'POST',
+            'https://api.cloudflare.com/host-gw.html',
+            ['Content-Type' => 'multipart/form-data'],
+            http_build_query($data)
+        ));
+		return json_decode($res->getBody(), true);
 	}
 
 	/**
@@ -71,7 +73,7 @@ class CloudFlare {
 		if ($res['response']['zone_exists'] == true) {
 			return $res;
 		} else {
-			die(_('Error, please confirm your domain.'));
+			die(trans('Error, please confirm your domain.'));
 		}
 	}
 
@@ -126,88 +128,6 @@ class CloudFlare {
 		return $res;
 
 	}
-}
-
-/**
- * Bulk edit a domain's DNS record.
- *
- * @param $zoneID
- * @param $subdomains
- * @param $zone_name
- * @return string
- */
-function update_bind($zoneID, $subdomains, $zone_name) {
-	file_put_contents('/var/www/tmp/' . $zoneID . 'txt', $subdomains);
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, 'https://api.cloudflare.com/client/v4/zones/' . $zoneID . '/dns_records/import');
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt($ch, CURLOPT_POST, 1);
-	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-		'Content-Type: multipart/form-data',
-		'X-Auth-Email: ' . $_COOKIE['cloudflare_email'],
-		'X-Auth-Key: ' . $_COOKIE['user_api_key'],
-	));
-	$postdata = [
-		'file' => new \CurlFile('/var/www/tmp/' . $zoneID . 'txt', 'text/plain', 'bind_config.txt'),
-	];
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
-	$data = curl_exec($ch);
-	$dataarray = json_decode($data);
-	if (curl_error($ch)) {
-		echo 'error:' . curl_error($ch);
-	}
-	curl_close($ch);
-	unlink('/var/www/tmp/' . $zoneID . 'txt');
-	if ($dataarray->success == true) {
-		return _('Updated successful.') . '<a href="/?action=zones&domain=' . $zone_name . '">' . _('Back to domain') . '</a>';
-	} else {
-		return $data . '<br><a href="/?action=zones&domain=' . $zone_name . '">' . _('Back to domain') . '</a>';
-	}
-}
-
-/**
- * Convert bytes to a human readable text (B, KB, MB, GB, etc.).
- *
- * @param $bytes
- * @param int $precision
- * @return string
- */
-function formatBytes($bytes, $precision = 2) {
-	$units = array('B', 'KB', 'MB', 'GB', 'TB');
-
-	$bytes = max($bytes, 0);
-	$pow = floor(($bytes ? log($bytes) : 0) / log(1024));
-	$pow = min($pow, count($units) - 1);
-
-	// Uncomment one of the following alternatives
-	$bytes /= pow(1024, $pow);
-	// $bytes /= (1 << (10 * $pow));
-
-	return round($bytes, $precision) . ' ' . $units[$pow];
-}
-
-/**
- * Convert bytes to a human readable array.
- * [0] is an integer.
- * [1] is the unit (B, KB, MB, etc.).
- * [2] is the unit number (0, 1, 2, etc.).
- *
- * @param $bytes
- * @param int $precision
- * @return array
- */
-function formatBytes_array($bytes, $precision = 2) {
-	$units = array('B', 'KB', 'MB', 'GB', 'TB');
-
-	$bytes = max($bytes, 0);
-	$pow = floor(($bytes ? log($bytes) : 0) / log(1024));
-	$pow = min($pow, count($units) - 1);
-
-	// Uncomment one of the following alternatives
-	$bytes /= pow(1024, $pow);
-	// $bytes /= (1 << (10 * $pow));
-
-	return [round($bytes, $precision), $units[$pow], $pow];
 }
 
 /**
