@@ -229,7 +229,7 @@ if (!empty($resp_a) || !empty($resp_aaaa)):
 <h4>Anycast IPv6</h4>
 <ul>
 	<?php foreach ($resp_aaaa as $answer): ?>
-	<li><code><?php echo $answer->ip(); ?></code></li>
+	<li><code><?php echo $answer->ipv6(); ?></code></li>
 	<?php endforeach; ?>
 </ul>
 <?php endif; endif; ?>
