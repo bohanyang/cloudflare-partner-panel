@@ -43,6 +43,11 @@ if (!isset($_COOKIE['user_key']) || !isset($_COOKIE['cloudflare_email']) || !iss
 		}
 	}
 } else {
+	if ($_GET['action'] = 'logout') { 
+		setcookie('cloudflare_email', '', time() - 86400);
+		setcookie('user_key', '', time() - 86400);
+		setcookie('user_api_key', '', time() - 86400);
+	}
 	$key = new \Cloudflare\API\Auth\APIKey($_COOKIE['cloudflare_email'], $_COOKIE['user_api_key']);
 	$adapter = new Cloudflare\API\Adapter\Guzzle($key);
 }
