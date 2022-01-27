@@ -43,7 +43,7 @@ if (!isset($_COOKIE['user_key']) || !isset($_COOKIE['cloudflare_email']) || !iss
 		}
 	}
 } else {
-	if ($_GET['action'] = 'logout') { 
+	if ($_GET['action'] === 'logout') { 
 		setcookie('cloudflare_email', '', time() - 86400);
 		setcookie('user_key', '', time() - 86400);
 		setcookie('user_api_key', '', time() - 86400);
