@@ -35,7 +35,7 @@ if (!isset($_COOKIE['tlo_cached_main'])) {
 	setcookie('tlo_cached_main', 1);
 }
 
-if (isset($_GET['action']) && $_GET['action'] == 'zone' && !isset($_COOKIE['tlo_cached_cloud'])) {
+if (isset($_GET['action']) && $_GET['action'] === 'zone' && !isset($_COOKIE['tlo_cached_cloud'])) {
 	h2push('assets/cloud_on.png', 'image');
 	h2push('assets/cloud_off.png', 'image');
 	setcookie('tlo_cached_cloud', 1);
@@ -69,7 +69,7 @@ if (!isset($_COOKIE['user_key']) || !isset($_COOKIE['cloudflare_email']) || !iss
 		}
 	}
 } else {
-	if (isset($_GET['user_key']) && $_GET['action'] === 'logout') { 
+	if (isset($_GET['action']) && $_GET['action'] === 'logout') { 
 		setcookie('cloudflare_email', '', time() - 86400);
 		setcookie('user_key', '', time() - 86400);
 		setcookie('user_api_key', '', time() - 86400);
