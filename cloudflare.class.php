@@ -129,16 +129,3 @@ class CloudFlare {
 
 	}
 }
-
-/**
- * Add resources hint header for HTTP/2 Push.
- *
- * @param string $uri the relative URI for the file to push
- * @param string $as the file type (script, style, image, etc)
- */
-function h2push(string $uri, string $as) {
-	global $tlo_path, $is_debug;
-	if (isset($tlo_path) && !$is_debug) {
-		header("Link: <{$tlo_path}{$uri}>; rel=preload; as={$as}", false);
-	}
-}

@@ -15,6 +15,32 @@ $version = '1.2.3';
 require __DIR__ . '/settings.php';
 require __DIR__ . '/cloudflare.class.php';
 
+/**
+ * Add resources hint header for HTTP/2 Push.
+ *
+ * @param string $uri the relative URI for the file to push
+ * @param string $as the file type (script, style, image, etc)
+ */
+function h2push(string $uri, string $as) {
+	global $tlo_path, $is_debug;
+	if (isset($tlo_path) && !$is_debug) {
+		header("Link: <{$tlo_path}{$uri}>; rel=preload; as={$as}", false);
+	}
+}
+
+if (!isset($_COOKIE['tlo_cached_main'])) {
+	h2push('assets/style.css', 'style');
+	h2push('assets/app.js', 'script');
+	h2push('assets/favicon.ico', 'image');
+	setcookie('tlo_cached_main', 1);
+}
+
+if (isset($_GET['action']) && $_GET['action'] == 'zone' && !isset($_COOKIE['tlo_cached_cloud'])) {
+	h2push('assets/cloud_on.png', 'image');
+	h2push('assets/cloud_off.png', 'image');
+	setcookie('tlo_cached_cloud', 1);
+}
+
 if (!isset($_COOKIE['user_key']) || !isset($_COOKIE['cloudflare_email']) || !isset($_COOKIE['user_api_key'])) {
 	$_GET['action'] = 'login';
 	if (isset($_POST['cloudflare_email']) && isset($_POST['cloudflare_pass'])) {
@@ -43,25 +69,13 @@ if (!isset($_COOKIE['user_key']) || !isset($_COOKIE['cloudflare_email']) || !iss
 		}
 	}
 } else {
-	if ($_GET['action'] === 'logout') { 
+	if (isset($_GET['user_key']) && $_GET['action'] === 'logout') { 
 		setcookie('cloudflare_email', '', time() - 86400);
 		setcookie('user_key', '', time() - 86400);
 		setcookie('user_api_key', '', time() - 86400);
 	}
 	$key = new \Cloudflare\API\Auth\APIKey($_COOKIE['cloudflare_email'], $_COOKIE['user_api_key']);
 	$adapter = new Cloudflare\API\Adapter\Guzzle($key);
-}
-if (!isset($_COOKIE['tlo_cached_main'])) {
-	h2push('assets/style.css', 'style');
-	h2push('assets/app.js', 'script');
-	h2push('assets/favicon.ico', 'image');
-	setcookie('tlo_cached_main', 1);
-}
-
-if (isset($_GET['action']) && $_GET['action'] == 'zone' && !isset($_COOKIE['tlo_cached_cloud'])) {
-	h2push('assets/cloud_on.png', 'image');
-	h2push('assets/cloud_off.png', 'image');
-	setcookie('tlo_cached_cloud', 1);
 }
 ?><!DOCTYPE html>
 <html <?php if (isset($iso_language)) {echo 'lang="' . $iso_language . '"';}?>>
